@@ -1,0 +1,249 @@
+{% extends "./base.html" %}
+{% load static %}
+
+
+{% block content %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<body  style="background: var(--gray-50, #F9FAFB);">
+  <!-- main Navbar  -->
+  <header class="navbar navbar-expand-md d-print-none" style="background-color: #fff; background: #FFF;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10); padding-bottom: 0;">
+    <div class="container-xl">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" style="border-bottom: 2px solid #6366F1;
+      ">
+        <img class="{% url 'app:dashboard' %}" src="{% static 'img/logo.png' %}" alt="" style="height: 50px; margin-right: 15px;
+        flex: 1 0 0;">
+Zendesk AI Bot
+      </h1>
+      <div class="navbar-nav flex-row order-md-last">
+        <div class="nav-item d-none d-md-flex me-3">
+          <div class="btn-list">
+            {% if user.subscription_status == "true" %}
+            <a href="#" class="btn" target="_blank" rel="noreferrer" style="color:#fff; border-radius: 8px;
+            background: #9C6CE8;">
+              ✨
+              Pro
+            </a>            
+            {% endif %}
+            <a href="#" class="btn" target="_blank" rel="noreferrer">
+              {{ user.docs_left }} Query left
+            </a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu" style="display: flex;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" style="width: 30px; height:30px" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+              <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+              <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
+           </svg>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow p-2" style="border-radius: 15px;line-height:24px; ">
+            <div class="flex_bg p-2"><h1 class="header">Account</h1> 
+              {% if not user.subscription_status == "true" %}
+              <span class="badge badge-outline text-indigo">Free</span>
+              {% endif %}
+
+
+              {% if user.subscription_status == "true" %}
+              <span class="badge badge-outline text-indigo">Pro</span>
+              {% endif %}
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'app:user_profile' %}" class="dropdown-item" style="flex-direction: column; align-items:flex-start; "><div class="page-title"> {{ user }} </div> <div class="subheader">{{ user.email }} </div>  </a>
+
+
+            {% if user.subscription_status == "true" %}
+            <a href="{% url 'app:user_profile' %}" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <g opacity="0.3">
+                <path d="M6.33317 3.33333C6.33317 2.8731 5.96007 2.5 5.49984 2.5C5.0396 2.5 4.6665 2.8731 4.6665 3.33333V4.16667H3.83317C3.37293 4.16667 2.99984 4.53976 2.99984 5C2.99984 5.46024 3.37293 5.83333 3.83317 5.83333H4.6665V6.66667C4.6665 7.1269 5.0396 7.5 5.49984 7.5C5.96007 7.5 6.33317 7.1269 6.33317 6.66667V5.83333H7.1665C7.62674 5.83333 7.99984 5.46024 7.99984 5C7.99984 4.53976 7.62674 4.16667 7.1665 4.16667H6.33317V3.33333Z" fill="#5733E7"/>
+                <path d="M5.49984 13.3333C5.49984 12.8731 5.12674 12.5 4.6665 12.5C4.20627 12.5 3.83317 12.8731 3.83317 13.3333V14.1667H2.99984C2.5396 14.1667 2.1665 14.5398 2.1665 15C2.1665 15.4602 2.5396 15.8333 2.99984 15.8333H3.83317V16.6667C3.83317 17.1269 4.20627 17.5 4.6665 17.5C5.12674 17.5 5.49984 17.1269 5.49984 16.6667V15.8333H6.33317C6.79341 15.8333 7.1665 15.4602 7.1665 15C7.1665 14.5398 6.79341 14.1667 6.33317 14.1667H5.49984V13.3333Z" fill="#5733E7"/>
+              </g>
+              <path d="M12.1087 3.02759C11.9832 2.70923 11.6757 2.5 11.3335 2.5C10.9913 2.5 10.6838 2.70923 10.5583 3.02759L9.09758 6.73123C8.9257 7.16705 8.88649 7.25055 8.84052 7.31473C8.78738 7.38893 8.72242 7.45389 8.64823 7.50702C8.58404 7.55299 8.50055 7.5922 8.06473 7.76408L4.36109 9.22478C4.04273 9.35034 3.8335 9.65777 3.8335 10C3.8335 10.3422 4.04273 10.6497 4.36109 10.7752L8.06473 12.2359C8.50055 12.4078 8.58404 12.447 8.64823 12.493C8.72242 12.5461 8.78738 12.6111 8.84052 12.6853C8.88649 12.7495 8.9257 12.8329 9.09758 13.2688L10.5583 16.9724C10.6838 17.2908 10.9913 17.5 11.3335 17.5C11.6757 17.5 11.9832 17.2908 12.1087 16.9724L13.5694 13.2688C13.7413 12.8329 13.7805 12.7495 13.8265 12.6853C13.8796 12.6111 13.9446 12.5461 14.0188 12.493C14.0829 12.447 14.1664 12.4078 14.6023 12.2359L18.3059 10.7752C18.6243 10.6497 18.8335 10.3422 18.8335 10C18.8335 9.65777 18.6243 9.35034 18.3059 9.22478L14.6023 7.76408C14.1664 7.5922 14.0829 7.55299 14.0188 7.50702C13.9446 7.45389 13.8796 7.38893 13.8265 7.31473C13.7805 7.25055 13.7413 7.16705 13.5694 6.73123L12.1087 3.02759Z" fill="#5733E7"/>
+            </svg> Subscription</a>
+            {% endif %}
+
+
+            {% if user.user_plan == "Free" %}
+            <a href="{% url 'subscriptions:upgrade' %}" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <g opacity="0.3">
+                <path d="M6.33317 3.33333C6.33317 2.8731 5.96007 2.5 5.49984 2.5C5.0396 2.5 4.6665 2.8731 4.6665 3.33333V4.16667H3.83317C3.37293 4.16667 2.99984 4.53976 2.99984 5C2.99984 5.46024 3.37293 5.83333 3.83317 5.83333H4.6665V6.66667C4.6665 7.1269 5.0396 7.5 5.49984 7.5C5.96007 7.5 6.33317 7.1269 6.33317 6.66667V5.83333H7.1665C7.62674 5.83333 7.99984 5.46024 7.99984 5C7.99984 4.53976 7.62674 4.16667 7.1665 4.16667H6.33317V3.33333Z" fill="#5733E7"/>
+                <path d="M5.49984 13.3333C5.49984 12.8731 5.12674 12.5 4.6665 12.5C4.20627 12.5 3.83317 12.8731 3.83317 13.3333V14.1667H2.99984C2.5396 14.1667 2.1665 14.5398 2.1665 15C2.1665 15.4602 2.5396 15.8333 2.99984 15.8333H3.83317V16.6667C3.83317 17.1269 4.20627 17.5 4.6665 17.5C5.12674 17.5 5.49984 17.1269 5.49984 16.6667V15.8333H6.33317C6.79341 15.8333 7.1665 15.4602 7.1665 15C7.1665 14.5398 6.79341 14.1667 6.33317 14.1667H5.49984V13.3333Z" fill="#5733E7"/>
+              </g>
+              <path d="M12.1087 3.02759C11.9832 2.70923 11.6757 2.5 11.3335 2.5C10.9913 2.5 10.6838 2.70923 10.5583 3.02759L9.09758 6.73123C8.9257 7.16705 8.88649 7.25055 8.84052 7.31473C8.78738 7.38893 8.72242 7.45389 8.64823 7.50702C8.58404 7.55299 8.50055 7.5922 8.06473 7.76408L4.36109 9.22478C4.04273 9.35034 3.8335 9.65777 3.8335 10C3.8335 10.3422 4.04273 10.6497 4.36109 10.7752L8.06473 12.2359C8.50055 12.4078 8.58404 12.447 8.64823 12.493C8.72242 12.5461 8.78738 12.6111 8.84052 12.6853C8.88649 12.7495 8.9257 12.8329 9.09758 13.2688L10.5583 16.9724C10.6838 17.2908 10.9913 17.5 11.3335 17.5C11.6757 17.5 11.9832 17.2908 12.1087 16.9724L13.5694 13.2688C13.7413 12.8329 13.7805 12.7495 13.8265 12.6853C13.8796 12.6111 13.9446 12.5461 14.0188 12.493C14.0829 12.447 14.1664 12.4078 14.6023 12.2359L18.3059 10.7752C18.6243 10.6497 18.8335 10.3422 18.8335 10C18.8335 9.65777 18.6243 9.35034 18.3059 9.22478L14.6023 7.76408C14.1664 7.5922 14.0829 7.55299 14.0188 7.50702C13.9446 7.45389 13.8796 7.38893 13.8265 7.31473C13.7805 7.25055 13.7413 7.16705 13.5694 6.73123L12.1087 3.02759Z" fill="#5733E7"/>
+            </svg> Upgrade to premium</a>
+            {% endif %}
+
+            
+
+            <a href="{% url 'users:logout' %}" class="dropdown-item" style="display: flex; justify-content:space-between;"><span>Sign out</span> <span class="float:right"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path d="M8 5L13 10L8 15" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+<div class="page">
+  <div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+      <div class="container-xl">
+        <div class="row g-2 align-items-center">
+          <div class="col">
+            <h1 class="page-title" style="font-size: 30px !important;">
+              Pricing
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      ._tag {
+        color: #A0A0A0;
+font-size: 36px;
+font-style: normal;
+font-weight: 900;
+line-height: 44px; /* 122.222% */
+letter-spacing: -0.72px;
+      }
+
+      .upper_tag {
+        display: flex;
+      } 
+
+      .card_sh {
+        border-radius: 12px;
+border: 1px solid var(--gray-200, #EAECF0);
+background: var(--white, #FFF);
+
+/* Shadow/sm */
+box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.06), 0px 1px 3px 0px rgba(16, 24, 40, 0.10);
+      }
+    </style>
+    <div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl">
+        <div class="row row-cards">
+          <div class="col-sm-6 col-lg-4">
+            <div class="card card-md card_sh" style="height:100%;">
+              <div class="card-body">
+                <div class="upper_tag"> <div class="logo_ px-2">Zendesk AI Bot</div> <span class="_tag">FREE</span></div>
+                <div class="subheader px-2">To try for free</div>
+                <div class="display-5 fw-bold my-3">FREE</div>
+                <div class="text-center mt-4 mb-4">
+                  <a href="{% url 'users:sign_up' %}" class="btn w-100">Get Started <div><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.16675 10H15.8334M15.8334 10L10.8334 5M15.8334 10L10.8334 15" stroke="#344054" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></div></a>
+                </div>
+                <ul class="list-unstyled lh-lg">
+                  <li class="mb-3" style="color:#5733E7; font-weight:700;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0001 18.3333C14.6025 18.3333 18.3334 14.6023 18.3334 9.99996C18.3334 5.39759 14.6025 1.66663 10.0001 1.66663C5.39771 1.66663 1.66675 5.39759 1.66675 9.99996C1.66675 14.6023 5.39771 18.3333 10.0001 18.3333ZM13.9458 8.0652C14.2579 7.72701 14.2368 7.1998 13.8987 6.88763C13.5605 6.57546 13.0333 6.59655 12.7211 6.93473L8.71804 11.2714L7.27909 9.71251C6.96692 9.37432 6.4397 9.35324 6.10152 9.66541C5.76333 9.97758 5.74225 10.5048 6.05442 10.843L8.1057 13.0652C8.26345 13.2361 8.48545 13.3333 8.71803 13.3333C8.95062 13.3333 9.17262 13.2361 9.33037 13.0652L13.9458 8.0652Z" fill="#5733E7"/>
+                    </svg>
+                    2 Queries/month
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card card-md card_sh" style="border-radius: 12px;
+            border: 3px solid var(--primary, #5733E7);
+            background: var(--white, #FFF);
+            height:100%;
+            
+            /* Shadow/lg */
+            box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08);">
+              <div class="card-body">
+                <div class="upper_tag"> <div class="logo_ px-2">Zendesk AI Bot</div> <span class="_tag"  style="color: #FDE047;">PRO</span></div>
+                <div class="subheader px-2">For active users</div>
+                <div class="display-5 fw-bold my-3">$10/mo</div>
+                <div class="text-center mt-4 mb-4">
+                  <a href="#" class="btn w-100"  style="color: #fff; background:#5733E7;" id="subscribe_pro">Get Started <div><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M4.16675 10H15.8334M15.8334 10L10.8334 5M15.8334 10L10.8334 15" stroke="#fff" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></div></a>
+                </div>
+                <ul class="list-unstyled lh-lg">
+                  <li class="mb-3" style="color:#5733E7; font-weight:700;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0001 18.3333C14.6025 18.3333 18.3334 14.6023 18.3334 9.99996C18.3334 5.39759 14.6025 1.66663 10.0001 1.66663C5.39771 1.66663 1.66675 5.39759 1.66675 9.99996C1.66675 14.6023 5.39771 18.3333 10.0001 18.3333ZM13.9458 8.0652C14.2579 7.72701 14.2368 7.1998 13.8987 6.88763C13.5605 6.57546 13.0333 6.59655 12.7211 6.93473L8.71804 11.2714L7.27909 9.71251C6.96692 9.37432 6.4397 9.35324 6.10152 9.66541C5.76333 9.97758 5.74225 10.5048 6.05442 10.843L8.1057 13.0652C8.26345 13.2361 8.48545 13.3333 8.71803 13.3333C8.95062 13.3333 9.17262 13.2361 9.33037 13.0652L13.9458 8.0652Z" fill="#5733E7"/>
+                    </svg>
+                    Unlimited Queries/month
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- page footer  -->
+    <footer class="footer footer-transparent d-print-none">
+      <div class="container-xl">
+        <div class="row text-center align-items-center flex-row-reverse">
+          <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+            <ul class="list-inline list-inline-dots mb-0">
+              <li class="list-inline-item">
+                Copyright © 2023
+                <a href="." class="link-secondary">Zendesk AI Bot</a>.
+                All rights reserved.
+              </li>
+              <li class="list-inline-item">
+                <a href="./changelog.html" class="link-secondary" rel="noopener">
+                  v1.0.0
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+
+<script>
+  console.log("Sanity check!");
+
+// Get Stripe publishable key
+fetch("/config/")
+.then((result) => { return result.json(); })
+.then((data) => {
+  // Initialize Stripe.js
+  const stripe = Stripe(data.publicKey);
+
+  // Event handler
+  let submitBtn = document.querySelector("#subscribe_pro");
+  if (submitBtn !== null) {
+    submitBtn.addEventListener("click", () => {
+    // Get Checkout Session ID
+    fetch("/create-checkout-session/")
+      .then((result) => { return result.json(); })
+      .then((data) => {
+        console.log(data);
+        // Redirect to Stripe Checkout
+        return stripe.redirectToCheckout({sessionId: data.sessionId})
+      })
+      .then((res) => {
+        console.log(res);
+      });
+    });
+  }
+});
+
+</script>
+</body>
+
+{% endblock %} 

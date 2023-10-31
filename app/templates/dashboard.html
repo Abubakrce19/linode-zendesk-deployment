@@ -1,0 +1,516 @@
+{% extends "./base.html" %}
+{% load static %}
+
+
+{% block content %}
+<style>
+  .flex_bg {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+</style>
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Raleway);
+
+.chat-bubble {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+  margin-top: 10px;
+  font-family: 'Raleway';
+  font-weight: 600;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.06);
+  border-radius: 15px;
+
+  border-bottom-left-radius: 0 !important;
+
+}
+
+.chat-bubble-me {
+  background-color: #9C6CE8 !important;
+  box-shadow: none;
+  color: #fff;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 15px !important;
+}
+
+.chat-bubble-author {
+    font-weight: 600;
+}
+
+.text-body {
+    --tblr-text-opacity: 1;
+    color: rgba(var(--tblr-body-color-rgb),var(--tblr-text-opacity))!important;
+}
+
+.avatar_chat {
+  background-color: #fff;
+  border-radius:50%;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.06);
+}
+
+input::placeholder {
+  font-family: 'Raleway';
+}
+</style>
+<body style="background: var(--gray-50, #F9FAFB);">
+<div class="page">
+  <!-- main Navbar  -->
+  <header class="navbar navbar-expand-md d-print-none" style="background-color: #fff; background: #FFF;
+  box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10); padding-bottom: 0;">
+    <div class="container-xl">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3" style="border-bottom: 2px solid #6366F1;
+      ">
+        <img class="{% url 'app:dashboard' %}" src="{% static 'img/logo.png' %}" alt="" style="height: 50px; margin-right: 15px;
+        flex: 1 0 0;">
+Zendesk AI Bot
+      </h1>
+      <div class="navbar-nav flex-row order-md-last">
+        <div class="nav-item d-none d-md-flex me-3">
+          <div class="btn-list">
+            {% if user.subscription_status == "true" %}
+            <a href="#" class="btn" target="_blank" rel="noreferrer" style="color:#fff; border-radius: 8px;
+            background: #9C6CE8;">
+              ✨
+              Pro
+            </a>            
+            {% endif %}
+
+            {% if show_context %}
+            <div onclick="update_db()" class="btn" target="_blank" rel="noreferrer">
+               Update DB
+            </div>
+            {% endif %}
+
+            <a href="#" class="btn" target="_blank" rel="noreferrer">
+              {{ user.docs_left }} Query left
+            </a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu" style="display: flex;">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" style="width: 30px; height:30px" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+              <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+              <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
+           </svg>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow p-2" style="border-radius: 15px;line-height:24px; ">
+            <div class="flex_bg p-2"><h1 class="header">Account</h1> 
+              {% if not user.subscription_status == "true" %}
+              <span class="badge badge-outline text-indigo">Free</span>
+              {% endif %}
+
+
+              {% if user.subscription_status == "true" %}
+              <span class="badge badge-outline text-indigo">Pro</span>
+              {% endif %}
+            </div>
+            <div class="dropdown-divider"></div>
+            <a href="{% url 'app:user_profile' %}" class="dropdown-item" style="flex-direction: column; align-items:flex-start; "><div class="page-title"> {{ user }} </div> <div class="subheader">{{ user.email }} </div>  </a>
+
+
+            {% if user.subscription_status == "true" %}
+            <a href="{% url 'app:user_profile' %}" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <g opacity="0.3">
+                <path d="M6.33317 3.33333C6.33317 2.8731 5.96007 2.5 5.49984 2.5C5.0396 2.5 4.6665 2.8731 4.6665 3.33333V4.16667H3.83317C3.37293 4.16667 2.99984 4.53976 2.99984 5C2.99984 5.46024 3.37293 5.83333 3.83317 5.83333H4.6665V6.66667C4.6665 7.1269 5.0396 7.5 5.49984 7.5C5.96007 7.5 6.33317 7.1269 6.33317 6.66667V5.83333H7.1665C7.62674 5.83333 7.99984 5.46024 7.99984 5C7.99984 4.53976 7.62674 4.16667 7.1665 4.16667H6.33317V3.33333Z" fill="#5733E7"/>
+                <path d="M5.49984 13.3333C5.49984 12.8731 5.12674 12.5 4.6665 12.5C4.20627 12.5 3.83317 12.8731 3.83317 13.3333V14.1667H2.99984C2.5396 14.1667 2.1665 14.5398 2.1665 15C2.1665 15.4602 2.5396 15.8333 2.99984 15.8333H3.83317V16.6667C3.83317 17.1269 4.20627 17.5 4.6665 17.5C5.12674 17.5 5.49984 17.1269 5.49984 16.6667V15.8333H6.33317C6.79341 15.8333 7.1665 15.4602 7.1665 15C7.1665 14.5398 6.79341 14.1667 6.33317 14.1667H5.49984V13.3333Z" fill="#5733E7"/>
+              </g>
+              <path d="M12.1087 3.02759C11.9832 2.70923 11.6757 2.5 11.3335 2.5C10.9913 2.5 10.6838 2.70923 10.5583 3.02759L9.09758 6.73123C8.9257 7.16705 8.88649 7.25055 8.84052 7.31473C8.78738 7.38893 8.72242 7.45389 8.64823 7.50702C8.58404 7.55299 8.50055 7.5922 8.06473 7.76408L4.36109 9.22478C4.04273 9.35034 3.8335 9.65777 3.8335 10C3.8335 10.3422 4.04273 10.6497 4.36109 10.7752L8.06473 12.2359C8.50055 12.4078 8.58404 12.447 8.64823 12.493C8.72242 12.5461 8.78738 12.6111 8.84052 12.6853C8.88649 12.7495 8.9257 12.8329 9.09758 13.2688L10.5583 16.9724C10.6838 17.2908 10.9913 17.5 11.3335 17.5C11.6757 17.5 11.9832 17.2908 12.1087 16.9724L13.5694 13.2688C13.7413 12.8329 13.7805 12.7495 13.8265 12.6853C13.8796 12.6111 13.9446 12.5461 14.0188 12.493C14.0829 12.447 14.1664 12.4078 14.6023 12.2359L18.3059 10.7752C18.6243 10.6497 18.8335 10.3422 18.8335 10C18.8335 9.65777 18.6243 9.35034 18.3059 9.22478L14.6023 7.76408C14.1664 7.5922 14.0829 7.55299 14.0188 7.50702C13.9446 7.45389 13.8796 7.38893 13.8265 7.31473C13.7805 7.25055 13.7413 7.16705 13.5694 6.73123L12.1087 3.02759Z" fill="#5733E7"/>
+            </svg> Subscription</a>
+            {% endif %}
+
+
+            {% if user.user_plan == "Free" %}
+            <a href="{% url 'subscriptions:upgrade' %}" class="dropdown-item"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <g opacity="0.3">
+                <path d="M6.33317 3.33333C6.33317 2.8731 5.96007 2.5 5.49984 2.5C5.0396 2.5 4.6665 2.8731 4.6665 3.33333V4.16667H3.83317C3.37293 4.16667 2.99984 4.53976 2.99984 5C2.99984 5.46024 3.37293 5.83333 3.83317 5.83333H4.6665V6.66667C4.6665 7.1269 5.0396 7.5 5.49984 7.5C5.96007 7.5 6.33317 7.1269 6.33317 6.66667V5.83333H7.1665C7.62674 5.83333 7.99984 5.46024 7.99984 5C7.99984 4.53976 7.62674 4.16667 7.1665 4.16667H6.33317V3.33333Z" fill="#5733E7"/>
+                <path d="M5.49984 13.3333C5.49984 12.8731 5.12674 12.5 4.6665 12.5C4.20627 12.5 3.83317 12.8731 3.83317 13.3333V14.1667H2.99984C2.5396 14.1667 2.1665 14.5398 2.1665 15C2.1665 15.4602 2.5396 15.8333 2.99984 15.8333H3.83317V16.6667C3.83317 17.1269 4.20627 17.5 4.6665 17.5C5.12674 17.5 5.49984 17.1269 5.49984 16.6667V15.8333H6.33317C6.79341 15.8333 7.1665 15.4602 7.1665 15C7.1665 14.5398 6.79341 14.1667 6.33317 14.1667H5.49984V13.3333Z" fill="#5733E7"/>
+              </g>
+              <path d="M12.1087 3.02759C11.9832 2.70923 11.6757 2.5 11.3335 2.5C10.9913 2.5 10.6838 2.70923 10.5583 3.02759L9.09758 6.73123C8.9257 7.16705 8.88649 7.25055 8.84052 7.31473C8.78738 7.38893 8.72242 7.45389 8.64823 7.50702C8.58404 7.55299 8.50055 7.5922 8.06473 7.76408L4.36109 9.22478C4.04273 9.35034 3.8335 9.65777 3.8335 10C3.8335 10.3422 4.04273 10.6497 4.36109 10.7752L8.06473 12.2359C8.50055 12.4078 8.58404 12.447 8.64823 12.493C8.72242 12.5461 8.78738 12.6111 8.84052 12.6853C8.88649 12.7495 8.9257 12.8329 9.09758 13.2688L10.5583 16.9724C10.6838 17.2908 10.9913 17.5 11.3335 17.5C11.6757 17.5 11.9832 17.2908 12.1087 16.9724L13.5694 13.2688C13.7413 12.8329 13.7805 12.7495 13.8265 12.6853C13.8796 12.6111 13.9446 12.5461 14.0188 12.493C14.0829 12.447 14.1664 12.4078 14.6023 12.2359L18.3059 10.7752C18.6243 10.6497 18.8335 10.3422 18.8335 10C18.8335 9.65777 18.6243 9.35034 18.3059 9.22478L14.6023 7.76408C14.1664 7.5922 14.0829 7.55299 14.0188 7.50702C13.9446 7.45389 13.8796 7.38893 13.8265 7.31473C13.7805 7.25055 13.7413 7.16705 13.5694 6.73123L12.1087 3.02759Z" fill="#5733E7"/>
+            </svg> Upgrade to premium</a>
+            {% endif %}
+
+            
+
+            <a href="{% url 'users:logout' %}" class="dropdown-item" style="display: flex; justify-content:space-between;"><span>Sign out</span> <span class="float:right"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path d="M8 5L13 10L8 15" stroke="#475467" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="page-wrapper">
+    <!-- Page body -->
+    <div class="page-body">
+      <div class="container-xl" style="position: relative;">
+
+        <!-- query limit message  -->
+        <div class="mb-3" id="error_msg" style="display: none;">
+          <div class="alert alert-warning" role="alert">
+            <div class="d-flex">
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+              </div>
+              <div>
+                <h4 class="alert-title">You've reached your limit!</h4>
+                <div class="text-secondary">Sorry! You've reached your limit of query. Please upgrade.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-important alert-info alert-dismissible" role="alert" style="position: fixed;
+        top: 48px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #9C6CE8;
+        background-color: #fff !important;
+        font-weight: 700;
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.06);
+        padding: 5px;
+        display: none;
+        z-index: 999;" id="_response_loader">
+          <div class="d-flex" style="align-items: center;">
+            <div>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <defs><clipPath id="ldio-py2pml1hcy-cp"><rect x="20" y="0" width="60" height="100"></rect></clipPath></defs>
+                <path fill="none" stroke="#9c6ce8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" clip-path="url(#ldio-py2pml1hcy-cp)" d="M90,76.7V28.3c0-2.7-2.2-5-5-5h-3.4c-2.7,0-5,2.2-5,5v43.4c0,2.7-2.2,5-5,5h-3.4c-2.7,0-5-2.2-5-5V28.3c0-2.7-2.2-5-5-5H55 c-2.7,0-5,2.2-5,5v43.4c0,2.7-2.2,5-5,5h-3.4c-2.7,0-5-2.2-5-5V28.3c0-2.7-2.2-5-5-5h-3.4c-2.7,0-5,2.2-5,5v43.4c0,2.7-2.2,5-5,5H15 c-2.7,0-5-2.2-5-5V23.3">
+                  <animateTransform attributeName="transform" type="translate" repeatCount="indefinite" dur="1s" values="-20 0;7 0" keyTimes="0;1"></animateTransform>
+                  <animate attributeName="stroke-dasharray" repeatCount="indefinite" dur="1s" values="0 72 125 232;0 197 125 233" keyTimes="0;1"></animate>
+                </path>
+                </svg>
+            </div>
+            <div id="loader_txt">
+              Response loading...
+            </div>
+          </div>
+        </div>
+
+
+        <div class="card" style="box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.06);">
+          <div class="row g-0">
+            <div class="col-12 col-lg-5 col-xl-3 border-end">
+              <div class="card-header d-none d-md-block">
+                <button onclick="create_new()" class="btn btn-primary" style="display: flex; justify-content: center; align-items: center; margin:auto; background-color: #9C6CE8;">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 5l0 14"></path>
+                    <path d="M5 12l14 0"></path>
+                 </svg>
+                 <div>Create new chat</div>
+                </button>
+              </div>
+              <div class="card-body p-0 scrollable" style="max-height: 35rem">
+                <div class="nav flex-column nav-pills" role="tablist">
+                    {% for i in docs %}
+                      <a href="{% url 'app:dashboard' id=i.id %}" class="nav-link text-start mw-100 p-3 {% if i.id|stringformat:"s" == parent_id|stringformat:"s" %}active{% endif %}" id="chat-1-tab">
+                        <div class="row align-items-center flex-fill">
+                          <div class="col-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-dots" width="24" height="24" style="width: 30px; height:30px;" viewBox="0 0 24 24" stroke-width="2" stroke="#9C6CE8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"></path>
+                              <path d="M12 11l0 .01"></path>
+                              <path d="M8 11l0 .01"></path>
+                              <path d="M16 11l0 .01"></path>
+                           </svg>
+                          </span>
+                          </div>
+                          <div class="col text-body">
+                            <div style="color: rgba(0, 0, 0, 0.32);  font-size: 14px; font-weight: 500;">{{ i.id }}</div>
+                            <div class="text-secondary text-truncate w-100">{{ i.short_summary }}</div>
+                          </div>
+                        </div>
+                      </a>
+                    {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-7 col-xl-9 d-flex flex-column">
+              <div class="card-body scrollable" style="height: 35rem; background-color: #F6F8FA;">
+                <div class="chat">
+                  <div class="chat-bubbles" id="chat_main">
+                    {% if show_context %}
+                      {% for message in messages %}
+                        {% for key, value in message.items %}
+                          {% if key|stringformat:"s" == 'user_msg' %}
+                            <div class="chat-item">
+                              <div class="row align-items-end justify-content-end">
+                                <div class="col col-lg-6">
+                                  <div class="chat-bubble chat-bubble-me">
+                                    <div class="chat-bubble-title">
+                                      <div class="row">
+                                        <div class="col chat-bubble-author" style="font-family: Poppins;">{{ request.user }}</div>
+                                      </div>
+                                    </div>
+                                    <div class="chat-bubble-body">
+                                      <p>{{ value|safe }}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% else %}
+                            <div class="chat-item">
+                              <div class="row align-items-end">
+                                <div class="col-auto">
+                                  <span class="avatar avatar_chat" style="background-image: url({% static 'img/bot_ava.jpg' %})"></span>
+                                </div>
+                                <div class="col col-lg-6">
+                                  <div class="chat-bubble">
+                                    <div class="chat-bubble-title">
+                                      <div class="row">
+                                        <div class="col chat-bubble-author" style="font-family: Poppins;">Zendesk AI</div>
+                                      </div>
+                                    </div>
+                                    <div class="chat-bubble-body">
+                                      <p>{{ value|linebreaks }}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                    {% else %}
+                      <div class="" style="display: flex; justify-content: center; align-items: center;">
+                        <h2 class="page-title">
+                          Nothing to show, Choose or create a new chat.
+                        </h2>
+                      </div>
+                    {% endif %}
+                  </div>
+                  
+                </div>
+              </div>
+              {% if show_context %}
+              <div class="card-footer" style="background-color: #fff;">
+                <div class="input-group input-group-flat">
+                  <input type="text" class="form-control" autocomplete="off" placeholder="Type message..." id="msg_content">
+                  <span id="send_btn" class="input-group-text" style="cursor: pointer;">
+                    <svg  xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-send" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M10 14l11 -11"></path>
+                      <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5"></path>
+                   </svg>
+                  </span>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- page footer  -->
+    <footer class="footer footer-transparent d-print-none">
+      <div class="container-xl">
+        <div class="row text-center align-items-center flex-row-reverse">
+          <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+            <ul class="list-inline list-inline-dots mb-0">
+              <li class="list-inline-item">
+                Copyright © 2023
+                <a href="." class="link-secondary">Zendesk AI Bot</a>.
+                All rights reserved.
+              </li>
+              <li class="list-inline-item">
+                <a href="./changelog.html" class="link-secondary" rel="noopener">
+                  v1.0.0
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+</body>
+
+{% csrf_token %}
+<script>
+
+function create_new() {
+const data = {
+  ijnbnbnbd: '{{ id }}'
+};
+
+const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+
+fetch('/api/chat/', {
+method: 'POST',
+headers: {
+  'Content-Type': 'application/json',
+  'X-CSRFToken': csrfToken, 
+},
+body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(result => {
+  console.log(result);
+  location.assign('/dashboard/' + result.id);
+})
+.catch(error => console.error(error));
+}
+
+
+
+  //document.querySelector("#parent2").style.display = 'none';
+
+    var sendButton = document.querySelector("#send_btn");
+    sendButton.addEventListener("click", addUserMessage);
+
+
+    var input = document.querySelector("#msg_content");
+    input.addEventListener("keydown", function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault(); 
+        addUserMessage(input.value);
+      }
+    });
+    
+
+
+    function addSystemMessage(msg) {
+      var chatMain = document.getElementById("chat_main");
+      const childNode = document.createElement('div');
+      var messageHTML = `
+      <div class="row align-items-end">
+                          <div class="col-auto"><span class="avatar avatar_chat" style="background-image: url({% static 'img/bot_ava.jpg' %})"></span>
+                          </div>
+                          <div class="col col-lg-6">
+                            <div class="chat-bubble">
+                              <div class="chat-bubble-title">
+                                <div class="row">
+                                  <div class="col chat-bubble-author" style="font-family: Poppins;">Zendesk AI</div>
+                                </div>
+                              </div>
+                              <div class="chat-bubble-body">
+                                <p>${msg}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+      `;
+      childNode.innerHTML = messageHTML;
+
+      childNode.classList.add('fade_in');
+      childNode.classList.add('chat-item');
+      childNode.classList.add('p_msg');
+      chatMain.appendChild(childNode);
+      chatMain.scrollTop = chatMain.scrollHeight;
+    }
+
+
+document.getElementById("_response_loader").style.display = 'none';
+
+function update_db() {
+  const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+var _response_loader = document.getElementById("_response_loader");
+_response_loader.style.display = 'block';
+document.getElementById("loader_txt").textContent = 'Updating database...';
+
+
+
+
+  const data = {
+  update_db: 'true',
+}; 
+
+  fetch('/api/update_db/', {
+method: 'POST',
+headers: {
+  'Content-Type': 'application/json',
+  'X-CSRFToken': csrfToken, 
+},
+body: JSON.stringify(data),
+}).then((response) => {
+      response.json().then((result) => {
+        document.getElementById("loader_txt").textContent = 'Response loading...';
+        _response_loader.style.display = 'none';
+      });
+    });
+}
+
+function addUserMessage() {
+var msg = document.querySelector('#msg_content').value;
+var chatMain = document.getElementById("chat_main");
+const childNode = document.createElement('div');
+const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+var _response_loader = document.getElementById("_response_loader");
+_response_loader.style.display = 'block';
+
+var messageHTML = `
+<div class="row align-items-end justify-content-end ">
+                        <div class="col col-lg-6">
+                          <div class="chat-bubble  chat-bubble-me">
+                            <div class="chat-bubble-title">
+                              <div class="row">
+                                <div class="col chat-bubble-author" style="font-family: Poppins;">{{ request.user }}</div>
+                              </div>
+                            </div>
+                            <div class="chat-bubble-body">
+                              <p>
+                                ${msg}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+`;
+childNode.innerHTML = messageHTML;
+
+childNode.classList.add('msg');
+childNode.classList.add('chat-item');
+chatMain.appendChild(childNode);
+chatMain.scrollTop = chatMain.scrollHeight;
+
+
+const data = {
+  query_txt: msg,
+  id: '{{ parent_id }}'
+};
+
+document.querySelector('#msg_content').value = "";
+
+fetch('/api/chat/', {
+method: 'POST',
+headers: {
+  'Content-Type': 'application/json',
+  'X-CSRFToken': csrfToken, 
+},
+body: JSON.stringify(data),
+}).then((response) => {
+      response.json().then((result) => {
+          // Error case
+          if (result.error) {
+            document.getElementById("error_msg").style.display = "block";
+            _response_loader.style.display = 'none';
+          } else {
+            _response_loader.style.display = 'none';
+            console.log(result);
+            addSystemMessage(result.msg);
+      }
+      });
+    });
+
+}
+
+
+</script>
+
+{% endblock %} 

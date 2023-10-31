@@ -1,0 +1,27 @@
+{% extends "./base.html" %}
+{% load static %}
+
+
+{% block content %}
+<body class=" border-top-wide border-primary d-flex flex-column">
+    <div class="page page-center">
+      <div class="container-tight py-4">
+        <div class="empty">
+          <div class="empty-header">Welcome</div>
+          <p class="empty-title">To Zendesk AI chatbot</p>
+          <p class="empty-subtitle text-muted">
+            You may login or register!
+          </p>
+          <div class="empty-action">
+            <a href="{% url 'users:sign_in' %}" class="btn btn-primary">
+                Login
+            </a>
+            <a href="{% url 'users:sign_up' %}" class="btn btn-primary">
+                Register
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+{% endblock %} 

@@ -1,0 +1,88 @@
+{% extends "./base.html" %} 
+
+{% load static %} 
+
+{% block content %}
+<body style="background: var(--gray-50, #F9FAFB);">
+  <div class="page">
+    <div class="page-wrapper">
+      <div class=" d-flex flex-column">
+        <div class="page page-center">
+          <div class="container container-normal py-4">
+            <div class="row align-items-center g-4">
+              <div class="col-lg">
+                <div class="container-tight">
+                  <div class="card card-md">
+                    <div class="card-body">
+                      <h1 class="h1 text-center mb-4">Sign in to your account</h1>
+                      <form class="" method="post" autocomplete="off" novalidate="">
+                        {%csrf_token%} 
+                        {% for field in form %}
+            
+                        <div class="mb-3">
+                            <div class="form-label" style="font-weight: 700;">{{field.name}}</div>
+                                {{field}}
+                        </div>        
+                        {% if field.errors %} {% for error in field.errors %}
+                        <span class="invalid-feedback {%if error%}d-block{%endif%}">{{error}}</span>
+                        {% endfor %} {%endif%}
+                      {% endfor %}
+                      <label class="form-label">
+                        <span class="form-label-description">
+                          <a href="{% url 'users:forgot_password' %}" style="color: #5733E7; font-weight: 700;">I forgot password</a>
+                        </span>
+                      </label>  
+                      <div class="mb-2">
+                        <span class="subheader">Password Minimum 8 characters</span>
+      
+                      </div>
+      
+                        <div class="mb-2">
+                          <label class="form-check">
+                            <input type="checkbox" class="form-check-input">
+                            <span class="form-check-label">Remember me</span>
+                          </label>
+                        </div>
+                        <div class="form-footer">
+                          <button type="submit" class="btn btn-primary w-100" style="background-color: #5733E7;">Sign in</button>
+                        </div>
+                        
+                        {% if SOCIALS %}
+                        <div class="hr-text">Or continue with</div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col"><a href="{% url "social:begin" "google-oauth2" %}" class="btn w-100">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                <path d="M3.39725 7.51C4.22926 5.85324 5.50563 4.46051 7.08368 3.48747C8.66174 2.51443 10.4793 1.99942 12.3333 2C15.0283 2 17.2923 2.99 19.0233 4.605L16.1563 7.473C15.1193 6.482 13.8013 5.977 12.3333 5.977C9.72825 5.977 7.52325 7.737 6.73825 10.1C6.53825 10.7 6.42425 11.34 6.42425 12C6.42425 12.66 6.53825 13.3 6.73825 13.9C7.52425 16.264 9.72825 18.023 12.3333 18.023C13.6783 18.023 14.8233 17.668 15.7193 17.068C16.2387 16.726 16.6834 16.2822 17.0265 15.7635C17.3695 15.2448 17.6038 14.6619 17.7153 14.05H12.3333V10.182H21.7513C21.8693 10.836 21.9333 11.518 21.9333 12.227C21.9333 15.273 20.8433 17.837 18.9513 19.577C17.2973 21.105 15.0333 22 12.3333 22C11.0199 22.0005 9.71929 21.7422 8.5058 21.2399C7.2923 20.7375 6.1897 20.0009 5.26101 19.0722C4.33232 18.1436 3.59575 17.041 3.09339 15.8275C2.59103 14.614 2.33273 13.3134 2.33325 12C2.33325 10.386 2.71925 8.86 3.39725 7.51Z" fill="#6B7280"/>
+                              </svg>
+                              </a></div>
+                          </div>
+                        </div>
+                        {% endif %}
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Get the first two elements with the class "form-label"
+var formLabels = document.querySelectorAll('.form-label');
+
+// Check if there are at least two elements with the class "form-label"
+if (formLabels.length >= 2) {
+  // Change the text of the first two elements
+  formLabels[0].textContent = 'Email';
+  formLabels[1].textContent = 'Password';
+}
+
+  </script>
+</body>
+
+
+{% endblock %}

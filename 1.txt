@@ -1,0 +1,212 @@
+Ticket ID: 17
+Ticket Description: Requesting to cancel my account subscription
+Ticket Subject: Account cancellation request
+Ticket 17 URL: https://skiff5911.zendesk.com/api/v2/tickets/17.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 16
+Ticket Description: Requesting training on a new software tool
+Ticket Subject: Training request
+Ticket 16 URL: https://skiff5911.zendesk.com/api/v2/tickets/16.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 15
+Ticket Description: Reporting a bug in the software application
+Ticket Subject: Software bug report
+Ticket 15 URL: https://skiff5911.zendesk.com/api/v2/tickets/15.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 14
+Ticket Description: Experiencing intermittent network connectivity
+Ticket Subject: Network connectivity issue
+Ticket 14 URL: https://skiff5911.zendesk.com/api/v2/tickets/14.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 13
+Ticket Description: Interested in upgrading my account to a premium plan
+Ticket Subject: Account upgrade request
+Ticket 13 URL: https://skiff5911.zendesk.com/api/v2/tickets/13.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 12
+Ticket Description: Encountered errors during software installation
+Ticket Subject: Software installation issue
+Ticket 12 URL: https://skiff5911.zendesk.com/api/v2/tickets/12.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 11
+Ticket Description: Looking for recommendations on a specific product
+Ticket Subject: Product recommendation
+Ticket 11 URL: https://skiff5911.zendesk.com/api/v2/tickets/11.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 10
+Ticket Description: Requesting a refund for a recent purchase
+Ticket Subject: Refund request
+Ticket 10 URL: https://skiff5911.zendesk.com/api/v2/tickets/10.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 9
+Ticket Description: Completing a data analysis task for a project
+Ticket Subject: Data analysis task
+Ticket 9 URL: https://skiff5911.zendesk.com/api/v2/tickets/9.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 8
+Ticket Description: Experiencing slow performance on the website
+Ticket Subject: Performance issue
+Ticket 8 URL: https://skiff5911.zendesk.com/api/v2/tickets/8.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 7
+Ticket Description: Seeking clarification on how to use a specific feature
+Ticket Subject: Product usage question
+Ticket 7 URL: https://skiff5911.zendesk.com/api/v2/tickets/7.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 6
+Ticket Description: Forgot my account password
+Ticket Subject: Password reset request
+Ticket 6 URL: https://skiff5911.zendesk.com/api/v2/tickets/6.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 5
+Ticket Description: Encountered an error while browsing the website
+Ticket Subject: Website error
+Ticket 5 URL: https://skiff5911.zendesk.com/api/v2/tickets/5.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 4
+Ticket Description: Question regarding my recent payment
+Ticket Subject: Payment inquiry
+Ticket 4 URL: https://skiff5911.zendesk.com/api/v2/tickets/4.json
+Ticket Status: new
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 3
+Ticket Description: Unable to login to my account
+Ticket Subject: Help with account access
+Ticket 3 URL: https://skiff5911.zendesk.com/api/v2/tickets/3.json
+Ticket Status: new
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 2
+Ticket Description: Hello i have issues while login in to your product.
+thanks
+Ticket Subject: Problems in login
+Ticket 2 URL: https://skiff5911.zendesk.com/api/v2/tickets/2.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+
+Ticket ID: 1
+Ticket Description: Hi there,
+
+I�m sending an email because I�m having a problem setting up your new product. Can you help me troubleshoot?
+
+Thanks,
+ The Customer
+
+
+Ticket Subject: Sample ticket: Meet the ticket
+Ticket 1 URL: https://skiff5911.zendesk.com/api/v2/tickets/1.json
+Ticket Status: open
+Ticket ID: Not available
+Ticket Description: Not available
+Ticket Subject: Not available
+Ticket URL: Not available
+Ticket Status: Not available
+Assignee Name: Not available
+

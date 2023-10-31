@@ -4,9 +4,13 @@ import os
 import sys
 
 
+# pip install social-auth-app-django
+# pip install django-cors-headers
+#
+
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DjangoApp.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main_project.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
