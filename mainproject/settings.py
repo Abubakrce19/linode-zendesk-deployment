@@ -12,7 +12,7 @@ SECRET_KEY = 'django-insecure-*1y81cc@ii%d8b*_1ovji9f(2*1v+n)dphj3w1vzpb+t)iz2xo
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'zendesk-ai.herokuapp.com'
+    '96.126.120.237'
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
