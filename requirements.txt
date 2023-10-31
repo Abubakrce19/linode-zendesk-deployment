@@ -7,5 +7,4 @@ sentence-transformers==2.2.2
 stripe==5.4.0
 torch==2.0.1
 zenpy==2.0.40
-social-auth-app-django
 social_django
