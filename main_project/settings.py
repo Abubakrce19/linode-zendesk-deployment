@@ -1,7 +1,6 @@
 from pathlib import Path
 import os
 
-import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
