@@ -9,5 +9,6 @@ torch==2.0.1
 zenpy==2.0.40
 python-social-auth
 social-auth-app-django
-psycobg2
+psycopg2-binary
+
 gunicorn
