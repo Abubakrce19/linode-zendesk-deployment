@@ -10,5 +10,5 @@ zenpy==2.0.40
 python-social-auth
 social-auth-app-django
 psycopg2-binary
-
+whitenoise
 gunicorn
