@@ -85,8 +85,8 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.postgresql',
         #new
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db.sqllite3'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR/'db.sqllite3'
         # 'USER': 'zefonyxrljmqto',
         # 'PASSWORD': '108d3d139e4ad89ad16ebaeb36de5f32db20649dc0611fe1375596aceaa785e1',
         # 'HOST': 'ec2-54-208-11-146.compute-1.amazonaws.com',
