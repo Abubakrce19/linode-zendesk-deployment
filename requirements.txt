@@ -8,6 +8,5 @@ stripe==5.4.0
 torch==2.0.1
 zenpy==2.0.40
 
-psycopg2==2.7.4
 
 gunicorn
